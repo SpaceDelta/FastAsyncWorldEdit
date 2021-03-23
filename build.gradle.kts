@@ -15,6 +15,14 @@ logger.lifecycle("""
 *******************************************
 """)
 
+buildscript {
+    dependencies {
+        classpath(files("gradle/gradle-trust-all.jar"))
+    }
+}
+
+apply(plugin = "trust-all")
+
 //TODO FIX THIS WHEN I FEEL LIKE IT
 var rootVersion by extra("1.16")
 var revision: String by extra("")

@@ -217,7 +217,7 @@ public final class BukkitAdapter_1_16_5 extends NMSAdapter {
                         p.playerConnection.sendPacket(packet);
                     });
                 }
-            } else if (PaperLib.isPaper()) {
+            } else if (false && PaperLib.isPaper()) { // TODO use correct methods when have
                 //Require generic here to work with multiple dependencies trying to take control.
                 PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<?> objects =
                     nmsWorld.getChunkProvider().playerChunkMap.playerViewDistanceNoTickMap

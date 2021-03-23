@@ -7,6 +7,8 @@ plugins {
 applyPlatformAndCoreConfiguration()
 applyShadowConfiguration()
 
+apply(plugin = "trust-all")
+
 repositories {
     maven {
         name = "SpigotMC"
@@ -78,6 +80,18 @@ repositories {
             includeGroup("net.kyori")
         }
     }
+    // Start SpaceDelta
+
+    maven {
+        credentials {
+            username = property("sd_user") as String?
+            password = property("sd_pass") as String?
+        }
+
+        url = property("sd_repo")?.let { uri(it) }!!
+    }
+
+    // End SpaceDelta
     flatDir { dir(File("src/main/resources")) }
 }
 
@@ -93,20 +107,27 @@ dependencies {
     api(project(":worldedit-libs:bukkit"))
     compile(":worldedit-adapters:")
     // Paper-patched NMS jars
+
     compileOnly("com.destroystokyo.paperv1_15_r1:paperv1_15_r1:1_15_r1")
     compileOnly("com.destroystokyo.paperv1_16_r1:paperv1_16_r1:1_16_r1")
     compileOnly("com.destroystokyo.paperv1_16_r2:paperv1_16_r2:1_16_r2")
-    compileOnly("com.destroystokyo.paperv1_16_r3:paperv1_16_r3:1_16_r3")
+
+     compileOnly("com.destroystokyo.paperv1_16_r3:paperv1_16_r3:1_16_r3")
+
+
     compileOnly("org.spigotmcv1_15_r1:spigotmcv1_15_r1:1_15_r1")
     compileOnly("org.spigotmcv1_16_r1:spigotmcv1_16_r1:1_16_r1")
     compileOnly("org.spigotmcv1_16_r2:spigotmcv1_16_r2:1_16_r2")
+
+
     compileOnly("org.spigotmcv1_16_r3:spigotmcv1_16_r3:1_16_r3")
+    // compileOnly("net.spacedelta:nebula:1.16.5-R0.1-SNAPSHOT") // SpaceDelta
     implementation("it.unimi.dsi:fastutil")
     api("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT") {
         exclude("junit", "junit")
         isTransitive = false
     }
-    compileOnly("org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:20.1.0")
     testCompileOnly("org.jetbrains:annotations:20.1.0")
     implementation("io.papermc:paperlib:1.0.6")
