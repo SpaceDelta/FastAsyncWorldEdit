@@ -226,22 +226,35 @@ public class BukkitGetBlocks_1_16_5 extends CharGetBlocks implements BukkitGetBl
 
     @Override
     public int getSkyLight(int x, int y, int z) {
-        int layer = y >> 4;
-        if (skyLight[layer] == null) {
-            SectionPosition sectionPosition = SectionPosition.a(getChunk().getPos(), layer);
-            NibbleArray nibbleArray = world.getChunkProvider().getLightEngine().a(EnumSkyBlock.SKY).a(sectionPosition);
-            // If the server hasn't generated the section's NibbleArray yet, it will be null
-            if (nibbleArray == null) {
-                byte[] a = new byte[2048];
-                // Safe enough to assume if it's not created, it's under the sky. Unlikely to be created before lighting is fixed anyway.
-                Arrays.fill(a, (byte) 15);
-                nibbleArray = new NibbleArray(a);
-                ((LightEngine) world.getChunkProvider().getLightEngine()).a(EnumSkyBlock.SKY, sectionPosition, nibbleArray, true);
+        try {
+            int layer = y >> 4;
+            if (skyLight[layer] == null) {
+                SectionPosition sectionPosition = SectionPosition.a(getChunk().getPos(), layer);
+                NibbleArray nibbleArray = world.getChunkProvider().getLightEngine().a(EnumSkyBlock.SKY).a(sectionPosition);
+                // If the server hasn't generated the section's NibbleArray yet, it will be null
+                if (nibbleArray == null) {
+                    byte[] a = new byte[2048];
+                    // Safe enough to assume if it's not created, it's under the sky. Unlikely to be created before lighting is fixed anyway.
+                    Arrays.fill(a, (byte) 15);
+                    nibbleArray = new NibbleArray(a);
+                    ((LightEngine) world.getChunkProvider().getLightEngine()).a(EnumSkyBlock.SKY, sectionPosition, nibbleArray, true);
+                }
+                skyLight[layer] = nibbleArray;
             }
-            skyLight[layer] = nibbleArray;
+            long l = BlockPosition.a(x, y, z);
+            return skyLight[layer].a(
+                    SectionPosition.b(
+                            BlockPosition.b(l)),
+                    SectionPosition.b(
+                            BlockPosition.c(l)),
+                    SectionPosition.b(
+                            BlockPosition.d(l)));
+        } catch (NullPointerException e) {
+            System.out.println("error calculating sky light at " + x + "," + y + "," + z);
+            e.printStackTrace();
         }
-        long l = BlockPosition.a(x, y, z);
-        return skyLight[layer].a(SectionPosition.b(BlockPosition.b(l)), SectionPosition.b(BlockPosition.c(l)), SectionPosition.b(BlockPosition.d(l)));
+
+        return 15;
     }
 
     @Override
