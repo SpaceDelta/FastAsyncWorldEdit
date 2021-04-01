@@ -912,6 +912,11 @@ public class AsyncWorld extends PassthroughExtent implements World {
     }
 
     @Override
+    public int getMinHeight() {
+        return 0;
+    }
+
+    @Override
     public int getMaxHeight() {
         return parent.getMaxHeight();
     }

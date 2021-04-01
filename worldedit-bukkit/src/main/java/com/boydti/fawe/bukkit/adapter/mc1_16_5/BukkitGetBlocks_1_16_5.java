@@ -916,7 +916,7 @@ public class BukkitGetBlocks_1_16_5 extends CharGetBlocks implements BukkitGetBl
                         continue;
                     }
                     super.trim(false, i);
-                } catch (IllegalAccessException ignored) {
+                } catch (IllegalAccessException | NullPointerException ignored) { // spacedelta
                     super.trim(false, i);
                 }
             }
